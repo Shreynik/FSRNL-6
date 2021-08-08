@@ -339,3 +339,97 @@ There are eight basic data types in JavaScript
 
 </CodeSurferColumns>
 
+---
+
+# Understanding 'this' keyword
+
+- 'new' binding: Called with new ?? Use newly constructed object 
+
+- Explicit binding: call, apply, bind ?? Use specified context object
+
+- Implicit binding: context object owning the call ?? Use that context object
+
+- Default binding: undefined in 'strict' mode, global object otherwise.
+
+---
+
+
+<CodeSurferColumns themes={[vsDark, github, vsDark], github} sizes={[1,1,1,1]}>
+
+<Step>
+
+```js title="Understanding 'this'" subtitle="'new' binding"
+   function User(name){
+       this.user = name;
+   }
+
+   const userA = new User('shreynik');
+   console.log(userA.user) // shreynik
+```
+
+```js title="Understanding 'this'" subtitle="Explicit binding"
+   function User(name){
+       this.user = name;
+   }
+
+   const test = {
+       address:'delhi'
+   }
+
+   const bindUser = User.bind(test, 'shrey');
+   bindUser();
+
+   console.log(test.address) // 'delhi'
+   console.log(test.user) // 'shrey'
+
+```
+
+```js title="Understanding 'this'" subtitle="Implicit binding"
+    function User(){
+       console.log(this.user)
+    }
+
+    const userA = {
+        user: 'shreynik',
+        getUser: User
+    };
+
+    console.log(userA.getUser()); // shreynik
+
+    const refFunc = userA.getUser;
+
+    refFunc() // undefined
+    
+```
+
+```js title="Understanding 'this'" subtitle="Default binding"
+
+    function User(){
+       console.log(this.user)
+    }
+
+    const userA = {
+        user: 'shreynik',
+        getUser: User
+    };
+
+    console.log(userA.getUser()); // shreynik
+
+    const refFunc = userA.getUser;
+
+    refFunc() // undefined
+   
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Prototypes
+
+
+
+
+---
