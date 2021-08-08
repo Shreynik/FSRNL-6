@@ -1,0 +1,341 @@
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark,nightOwl } from "@code-surfer/themes";
+import {Appear} from 'mdx-deck' 
+export const theme = vsDark;
+
+# Intro to Javascript 👦💪
+
+---
+
+# Agenda
+
+- Data Types
+- ES5/ES6
+- Objects, Prototypes, Inheritance, 'this' keyword
+- Functions Vs Classes, fat arrow functions
+- Closures, IIFE
+- Async/Await, Promises, Error Handling
+- Modules, Import & Export, Dynamic Imports
+- DOM
+- Small project in vanilla JS
+
+---
+
+# Data Types
+
+There are eight basic data types in JavaScript
+- Number
+- BigInt
+- String
+- Boolean
+- null
+- undefined
+- object
+- symbol
+
+---
+
+<CodeSurfer>
+
+```js title="Number" subtitle="Integer, Floating, integers are limited by ±(2^53-1)"
+  let n = 123;
+  n = 12.345;
+```
+
+```js title="Number" subtitle="Special Cases"
+  alert( 1 / 0 ); // Infinity
+  alert( "string" / 2 ); // NaN, not supported
+```
+</CodeSurfer>
+
+
+---
+
+<CodeSurfer>
+
+```js title="BigInt" 
+  // the "n" at the end means it's a BigInt
+  const bigInt = 111212312312312313213326789n;
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="String" 
+  let str1 = "Hey";
+  let str2 = 'this is full stack course';
+  let phrase = `${str2} in react and node`;
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="Boolean(logical type)" 
+  let check = 40 > 1;
+  alert( check ); // true 
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="The “null” value" 
+  let age = null;
+
+  // null is not a “reference to a non-existing object” or a “null pointer”
+
+  // special value which represents “nothing”, “empty” or “value unknown”.
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="The “undefined” value" 
+  let age;
+
+  alert(age); // shows "undefined"
+
+  // undefined is “value is not assigned”.
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="Objects" subtitle="Everything in JS is an object"
+   const user = {
+       name: "shreynik",
+       age: 25,
+       address: null
+   }
+  // All other types are called “primitive”
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="Symbol" subtitle="Used to create unique identifiers for objects"
+   const uniqueKey = Symbol('store');
+   const generateKey = Symbol.for('shreynik');
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```js title="The typeof operator" subtitle="returns the type of the argument"
+    typeof undefined // "undefined"
+
+    typeof 0 // "number"
+
+    typeof 10n // "bigint"
+
+    typeof true // "boolean"
+
+    typeof "foo" // "string"
+
+    typeof Symbol("id") // "symbol"
+
+    typeof Math // "object"  (1)
+
+    typeof null // "object"  (2)
+
+    typeof alert // "function"  (3)
+```
+
+</CodeSurfer>
+
+---
+
+### Manuals and specifications
+
+---
+
+### Specification
+
+  - Ecmascript(ES): Detailed and formalised info about JS. Defines language
+
+  - New features: https://github.com/tc39/proposals
+
+  - Generic features, some host specific like for browser, node js etc.
+
+---
+
+### Manual
+
+  - MDN: Understanding language fn, methods etc... 
+
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+
+---
+
+### Compatibility
+
+  - Browser based support of new features: http://caniuse.com
+
+  - Engine wise support of language specs: https://kangax.github.io/compat-table
+
+
+---
+
+### ES5 vs ES6
+
+- 2009 , 2015
+- Symbol was introduced
+- let and const
+- Higher performance
+- Arrow functions 
+- Larger community support
+- Spread operator
+- Template Literal
+- Introduction of for ...of loop for iteration over values
+
+---
+
+### Objects, Prototypes, Inheritance, 'this' keyword
+
+---
+
+# Objects
+
+- store properties (key-value pairs)
+
+- Property keys must be strings or symbols (usually strings)
+
+- Values can be of any type
+
+- Access a property
+
+  - The dot notation: obj.property
+
+  - Square brackets notation obj["property"]
+
+---
+
+<CodeSurferColumns themes={[vsDark, github, vsDark]} sizes={[1,2,1]}>
+
+<Step>
+
+```js title="Objects" subtitle="Syntax"
+    let user = new Object(); // "object constructor" syntax
+    let user = {};  // "object literal" syntax
+```
+
+```js title="Objects" subtitle="Literals and properties, computed properites"
+    let user = {     
+        name: "Shreynik",  
+        age: 25,
+        "likes badminton": true  // multiword property name must be quoted
+    };
+
+    // get property values of the object:
+    alert( user.name ); // Shreynik
+    alert( user.age ); // 25
+
+    // Computed properties
+    let name = 'shreynik';
+    let fullName = {
+        [name + 'Kumar']: 25 // bag.shreynikKumar = 5
+    };
+
+```
+
+```js title="Objects" subtitle="get,set,delete operations"
+    let user = {};
+
+    // set
+    user["likes badminton"] = true;
+
+    // get
+    alert(user["likes badminton"]); // true
+
+    // delete
+    delete user["likes badminton"];
+
+    let key = "likes birds";
+
+    // same as user["likes birds"] = true;
+    user[key] = true;
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github, vsDark]} sizes={[1,1,1]}>
+
+<Step>
+
+```js title="Objects" subtitle="Property existence test"
+   let user = { age: 30 };
+
+   let key = "age";
+   alert( key in user ); // true, property "age" exists
+
+    let obj = {
+        test: undefined
+    };
+
+    alert( obj.test ); // it's undefined, so - no such property?
+
+    alert( "test" in obj ); // true, the property does exist!
+```
+
+```js title="Objects" subtitle="iteration on objects"
+    let user = {
+        name: "John",
+        age: 30,
+        isAdmin: true
+    };
+
+    for (let key in user) {
+        // keys
+        alert( key );  // name, age, isAdmin
+        // values for the keys
+        alert( user[key] ); // John, 30, true
+    }
+
+```
+
+```js title="Objects" subtitle="ordering"
+    let codes = {
+        "49": "Germany",
+        "41": "Switzerland",
+        "44": "Great Britain",
+        // ..,
+        "1": "USA"
+    };
+
+    for (let code in codes) {
+         alert(code); // 1, 41, 44, 49
+    }
+```
+
+</Step>
+
+</CodeSurferColumns>
+
