@@ -19,7 +19,6 @@ export const theme = vsDark;
 - Functions Vs Classes, fat arrow functions
 - Closures, IIFE
 - Async/Await, Promises, Error Handling
-- Modules, Import & Export, Dynamic Imports
 - DOM
 - Small project in vanilla JS
 
@@ -405,19 +404,23 @@ There are eight basic data types in JavaScript
 ```js title="Understanding 'this'" subtitle="Default binding"
 
     function User(){
-       console.log(this.user)
+       console.log(this.name)
     }
 
-    const userA = {
-        user: 'shreynik',
-        getUser: User
-    };
+    var name = 'shreynik'
 
-    console.log(userA.getUser()); // shreynik
+    User() // 'shreynik'
 
-    const refFunc = userA.getUser;
+   ----------------------
 
-    refFunc() // undefined
+    function User(){
+      "use strict"
+      console.log(this.name)
+    }
+
+    var name = 'shreynik'
+
+    User() // TypeError
    
 ```
 
@@ -429,7 +432,573 @@ There are eight basic data types in JavaScript
 
 # Prototypes
 
+  - ##### objects have a special hidden property [[Prototype]], null or references another object. 
 
+  - ##### When we read a property from object, and it’s missing, JavaScript automatically takes it from the prototype
+
+  - ##### Prototypal Inheritance
+
+---
+
+<CodeSurferColumns themes={[vsDark, github, vsDark], github} sizes={[1,1,1]}>
+
+<Step>
+
+```js title="Prototypes/Inheritance" 
+    let animal = {
+        eats: true
+    };
+    let rabbit = {
+      jumps: true
+    };
+
+    rabbit.__proto__ = animal;
+    alert( rabbit.eats ); 
+    alert( rabbit.jumps );
+
+```
+
+```js title="Prototypes"
+   let animal = {
+      eats: true,
+      walk() {
+        alert("Animal walk");
+      }
+    };
+
+    let rabbit = {
+      jumps: true,
+      __proto__: animal
+    };
+
+    let longEar = {
+      earLength: 10,
+      __proto__: rabbit
+    };
+
+```
+
+```js title="Prototypes/Inheritance"
+    let user = {
+      name: "John",
+      surname: "Smith",
+
+      set fullName(value) {
+        [this.name, this.surname] = value.split(" ");
+      },
+
+      get fullName() {
+        return `${this.name} ${this.surname}`;
+      }
+    };
+
+    let admin = {
+      __proto__: user,
+      isAdmin: true
+    };
+
+    alert(admin.fullName);
+
+    admin.fullName = "Alice Cooper";
+
+    alert(admin.fullName);
+    alert(user.fullName);
+    
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark]} sizes={[1]}>
+
+<Step>
+
+```js title="Prototypes/Inheritance" 
+   let animal = {
+      walk() {
+        if (!this.isSleeping) {
+          alert(`I walk`);
+        }
+      },
+      sleep() {
+        this.isSleeping = true;
+      }
+    };
+
+    let rabbit = {
+      name: "White Rabbit",
+      __proto__: animal
+    };
+
+    rabbit.sleep();
+
+    alert(rabbit.isSleeping);
+    alert(animal.isSleeping);
+
+```
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+`Prototypes`
+
+[![Screenshot-2021-08-20-at-11-07-47-PM.png](https://i.postimg.cc/pdf61knq/Screenshot-2021-08-20-at-11-07-47-PM.png)](https://postimg.cc/B8vpjTpK)
+
+---
+
+<CodeSurferColumns themes={[vsDark, github, vsDark]} sizes={[1,1,1]}>
+
+<Step>
+
+```js title="Class" subtitle="syntax"
+  class MyClass {
+      // class methods
+      constructor() { ... }
+      method1() { ... }
+      method2() { ... }
+      method3() { ... }
+      ...
+  }
+
+```
+
+```js title="Class" subtitle="syntax"
+  class User {
+
+    constructor(name) {
+      this.name = name;
+    }
+
+    sayHi() {
+      alert(this.name);
+    }
+
+  }
+
+  // Usage:
+  let user = new User("John");
+  user.sayHi();
+
+```
+
+```js title="Class" subtitle="syntax"
+  class MyClass {
+    prop = value; // property
+
+    constructor(...) { // constructor
+      // ...
+    }
+
+    method(...) {} // method
+
+    get something(...) {} // getter method
+    set something(...) {} // setter method
+
+    [Symbol.iterator]() {} // method with computed name (symbol here)
+    // ...
+  }
+
+```
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[github]} sizes={[1]}>
+
+<Step>
+
+```js title="Functions" subtitle="Fat arrow functions"
+  class Button {
+    constructor(value) {
+      this.value = value;
+    }
+    click = () => {
+      alert(this.value);
+    }
+  }
+
+  let button = new Button("hello");
+
+  setTimeout(button.click, 1000);
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[github]} sizes={[1]}>
+
+<Step>
+
+```js title="Closures"
+  function makeCounter() {
+      let count = 0;
+
+      return function() {
+        return count++;
+      };
+    }
+
+    let counter = makeCounter();
+
+    alert( counter() );
+    alert( counter() ); 
+    alert( counter() ); 
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark]} sizes={[1]}>
+
+<Step>
+
+```js title="IIFE"
+  const makeCounter = (()=>{
+    let counter = 0;
+    return function(){
+      counter++
+    }
+  })()
+
+```
+
+</Step>
+
+</CodeSurferColumns>
 
 
 ---
+
+# Async/Await/Promises
+
+- asynchronous programming
+
+- callbacks
+
+- callback hell
+
+
+---
+
+<CodeSurferColumns themes={[vsDark]} sizes={[1]}>
+
+<Step>
+
+```js title="Callback hell example"
+  loadScript('/my/script.js', function(script) {
+
+    loadScript('/my/script2.js', function(script) {
+
+      loadScript('/my/script3.js', function(script) {
+        // ...continue after all scripts are loaded
+      });
+
+    });
+
+  });
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Promise
+
+- A “producing code” that does something and takes time
+  - For instance, some code that loads the data over a network
+
+- A “consuming code” that wants the result of the “producing code” once it’s ready.
+  - Functions/callbacks relying on results
+
+- A promise is a special JavaScript object that links the “producing code” and the “consuming code” together  
+
+
+---
+
+<CodeSurferColumns themes={[vsDark]} sizes={[1]}>
+
+<Step>
+
+```js title="Promise"
+  let promise = new Promise(function(resolve, reject) {
+    setTimeout(() => resolve("done"), 1000);
+  });
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+`Promise`
+
+[![Screenshot-2021-08-20-at-11-51-21-PM.png](https://i.postimg.cc/QdL07P6V/Screenshot-2021-08-20-at-11-51-21-PM.png)](https://postimg.cc/KRNPS9hy)
+
+---
+
+<CodeSurferColumns themes={[vsDark, github, vsDark]} sizes={[1,1,1]}>
+
+<Step>
+
+```js title="Promise chaining" subtitle="success"
+  let promise = new Promise(function(resolve, reject) {
+    setTimeout(() => resolve("done!"), 1000);
+  });
+
+  // resolve runs the first function in .then
+  promise.then(
+    result => alert(result), // shows "done!" after 1 second
+    error => alert(error) // doesn't run
+  );
+
+```
+
+
+```js title="Promise chaining" subtitle="error"
+  let promise = new Promise(function(resolve, reject) {
+    setTimeout(() => reject(new Error("Whoops!")), 1000);
+  });
+
+  // reject runs the second function in .then
+  promise.then(
+    result => alert(result), // doesn't run
+    error => alert(error) // shows "Error: Whoops!" after 1 second
+  );
+
+```
+
+```js title="Promise chaining" subtitle="everything"
+  let promise = new Promise(resolve => {
+    setTimeout(() => resolve("done!"), 1000);
+  });
+
+  promise
+    .then(res=> console.log(res))
+    .catch(err=> console.log(err))
+    .finally(()=> console.log('Do something irrespective'))
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Async/Awaits
+
+-  special syntax to work with promises in a more comfortable fashion
+
+-  No difference technically
+
+-  Async functions: returns a promise always
+
+-  Await: works only inside async functions
+
+-  makes JavaScript wait until that promise settles and returns its result
+
+---
+
+
+<CodeSurferColumns themes={[vsDark]} sizes={[1]}>
+
+<Step>
+
+```js title="Promise chaining" subtitle="success"
+  async function f() {
+
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), 1000)
+    });
+
+    let result = await promise; // wait until the promise resolves
+
+    alert(result); // "done!"
+  }
+
+  f();
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Client/Web Browser
+
+[![Screenshot-2021-08-21-at-12-12-17-AM.png](https://i.postimg.cc/05G9wR5H/Screenshot-2021-08-21-at-12-12-17-AM.png)](https://postimg.cc/ThPzzsDr)
+
+---
+
+# BOM
+
+- Browser Object Model
+
+- alert/confirm , setTimeout ==> host specific methods
+
+- navigator, location objects
+
+---
+
+# DOM
+
+- Document Object Model
+
+- every HTML tag is an object
+
+- Nested tags are “children” 
+
+- The text inside a tag is an object as well.
+
+- document.body is the object representing the `<body>` tag
+
+- An HTML/XML document is represented inside the browser as the DOM tree
+
+
+---
+
+# DOM
+
+- `<html>` = document.documentElement
+
+- `<body>` = document.body
+
+- `<head>` = document.head
+
+---
+
+### Walking the DOM
+
+[![Screenshot-2021-08-21-at-3-17-41-PM.png](https://i.postimg.cc/W3CZwV1q/Screenshot-2021-08-21-at-3-17-41-PM.png)](https://postimg.cc/BL5tJdDJ)
+
+
+---
+
+### Searching/Querying DOM
+
+- How to get an arbitrary element of the page?
+
+- getElement*, querySelector*
+
+[![Screenshot-2021-08-21-at-3-20-42-PM.png](https://i.postimg.cc/Y953qYgP/Screenshot-2021-08-21-at-3-20-42-PM.png)](https://postimg.cc/hz0x2J28)
+
+
+---
+
+
+<CodeSurferColumns themes={[vsDark, github, vsDark, github]} sizes={[1,1,1,1]}>
+
+<Step>
+
+```html title="Querying DOM" subtitle="Examples"
+  <div id="elem">
+    <div id="elem-content">Element</div>
+  </div>
+
+  <script>
+    // get the element
+    let elem = document.getElementById('elem');
+
+    // make its background red
+    elem.style.background = 'red';
+  </script>
+
+```
+
+```html title="Querying DOM" subtitle="Examples"
+  <ul>
+    <li>The</li>
+    <li>test</li>
+  </ul>
+  <ul>
+    <li>has</li>
+    <li>passed</li>
+  </ul>
+  <script>
+    let elements = document.querySelectorAll('ul > li:last-child');
+
+    for (let elem of elements) {
+      alert(elem.innerHTML); // "test", "passed"
+    }
+  </script>
+```
+
+```html title="Querying DOM" subtitle="Examples"
+  <div>First div</div>
+
+  <script>
+    let divs = document.getElementsByTagName('div');
+    alert(divs.length); // 1
+  </script>
+
+  <div>Second div</div>
+
+  <script>
+    alert(divs.length); // 2
+  </script>
+```
+
+```html title="Querying DOM" subtitle="Examples"
+  <div>First div</div>
+
+  <script>
+    let divs = document.querySelectorAll('div');
+    alert(divs.length); // 1
+  </script>
+
+  <div>Second div</div>
+
+  <script>
+    alert(divs.length); // 1
+  </script>
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+## Understanding DOM Classes
+
+[![Screenshot-2021-08-21-at-3-26-39-PM.png](https://i.postimg.cc/02D8QvgX/Screenshot-2021-08-21-at-3-26-39-PM.png)](https://postimg.cc/7fPvspZS)
+
+
+---
+
+## Understanding DOM Classes
+
+- EventTarget: "events" support to DOM nodes
+
+- Node: Core tree functionality: parentNode, nextSibling, childNodes
+
+- Element: Element level navigation ==> nextElementSibling, children, getElementsByTagName, querySelector
+
+---
+
+
+## Mini project in Vanilla JS
+
+[![Screenshot-2021-08-21-at-5-01-51-PM.png](https://i.postimg.cc/63FHHf4h/Screenshot-2021-08-21-at-5-01-51-PM.png)](https://postimg.cc/JDcc0Jqy)
