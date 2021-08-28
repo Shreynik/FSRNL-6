@@ -1,0 +1,511 @@
+import { CodeSurfer, CodeSurferColumns, Step } from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import { Appear } from "mdx-deck";
+export const theme = vsDark;
+
+# Exploring TypeScript 👦💪
+
+---
+
+# Agenda
+
+- The any type
+- The unknown type
+- Intersection and union types
+- Literal types
+- Type aliases
+- Function return types
+- Functions as types
+- The never type
+- Understanding classes and interfaces
+- Understanding inheritance
+- Learning generics
+- Learning the latest features and configuring the compiler
+
+---
+
+# Intorduction To TypeScript
+
+- Superset of JavaScript that means any JavaScript Code is a Valid TypeScript Code
+- TypeScript adds more functionality to JavaScript
+- You can catch errors on compile time which you will get on runtime in case of JS
+- TypeScript Compiles down to JavaScript
+
+---
+
+# Installing TypeScript
+
+- Windows - npm install -g typeScript
+- Mac - sudo npm install -g typeScript
+
+<CodeSurfer>
+
+```bash title="Version"
+  tsc --version
+```
+
+</CodeSurfer>
+
+---
+
+# JavaScript vs TypeScript
+
+<CodeSurferColumns themes={[vsDark, github, vsDark], github} sizes={[1,1,1,1]}>
+
+<Step>
+
+```js title="JavaScript" subtitle=""
+const add = (num1, num2) => {
+  return num1 + num2;
+};
+
+console.log(add("2", "5")); // 25
+// Here in case of string input the strings will also be added which should not happen
+```
+
+```js title="TypeScript" subtitle=""
+const add = (num1: number, num2: number) => {
+  return num1 + num2;
+};
+
+console.log(add("2", "5")); // Error
+// Since in add function it is declared that both number should be of type of number
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+#
+
+- Error in case you try to pass string where number should pe passed
+  [![ts1.png](https://i.postimg.cc/HsfK674p/ts1.png)](https://postimg.cc/QHJ0tCyP)
+
+---
+
+# The any type
+
+- When we don't have idea about the type of variable then any is Used
+- It allows to opt out of type checking errors
+- You can assign any type of value to the variable having any as type
+- Values with any type can be assigned to values having different type.
+
+---
+
+<CodeSurferColumns>
+
+<Step>
+
+```js title="Type: number"
+let num: number;
+
+num = "Hey";
+// Produces error because assigning a string
+// to variable which have type number
+```
+
+[![ts4.png](https://i.postimg.cc/9ftGqzBX/ts4.png)](https://postimg.cc/qtqtPJYW)
+
+```js title="Type: any"
+let num: any;
+
+num = "String";
+num = 5;
+num = false;
+// No error here
+// because type is any
+// Any value can be assigned
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# The unknown type
+
+- Any type of value can be assigned to the variable having unknown as type
+- Unknown type cannot be assigned to other types except any and unknown itself
+- No operation can be performed on values typed unknown
+
+---
+
+#
+
+Type: unknown
+
+<CodeSurferColumns>
+ 
+<Step>
+
+```js title=""
+let num: unknown = "Hey";
+
+let num1: string = num; // Error
+// Even though num1 has type string and
+// num also has value which is of type string
+// but it still produces error because
+// unknown type cannot be assigned to other type
+```
+
+[![ts5.png](https://i.postimg.cc/7YkXb84N/ts5.png)](https://postimg.cc/F1T0n67f)
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+# Union Type
+
+- TypeScript allows to use more than one type for a variable or parameter. This is called union.
+- For Example you want a variable can have value of type string or number in that case union helps.
+- "|" operator is used to define multiple types. Eg. number | string | boolean
+
+---
+
+#
+
+Union Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+const add = (num1: number | string, num2: number | string) => {
+
+    let ans;
+
+    if(typeof num1 === 'number' && typeof num2 == 'number'){
+        ans = num1 + num2;
+    } else{
+        ans = num1.toString() + num2.toString();
+    }
+
+    return ans;
+  };
+  ​
+  console.log(add("2", "5")); // 25
+  console.log(add(2,5)); // 7
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Intersection Type
+
+- Intersection type creates a new type by combining multiple existing types.
+- The new type has all features of the existing types.
+- "&" operator is used to combine multiple types. Eg. A & B
+
+---
+
+#
+
+Intersection Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+interface A {
+  name: string;
+  age: number;
+}
+
+interface B {
+  email: string;
+}
+
+type C = A & B;
+
+const val: C = {
+  name: "XYZ",
+  age: 20,
+};
+// Error
+// Since val is declared as type C
+// Type C is a combination of A B
+// In val email is not present which is a part of B
+```
+
+[![ts6.png](https://i.postimg.cc/MZDQwv6q/ts6.png)](https://postimg.cc/F1YRgFkB)
+
+```js title=""
+interface A {
+  name: string;
+  age: number;
+}
+
+interface B {
+  email: string;
+}
+
+type C = A & B;
+
+const val: C = {
+  name: "XYZ",
+  age: 20,
+  email: "xyz@email.com",
+};
+
+console.log(val);
+//{ name: 'XYZ', age: 20, email: 'xyz@email.com' }
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Literal Type
+
+- A literal is a more concrete sub-type of a collective type.
+- The literal types allow you to define a type that accepts only one specified literal.
+
+---
+
+#
+
+Literal Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+let direction: "North";
+
+direction = "South";
+// Error
+// direction accepts only one literal
+// i.e. North
+// Assigning except North will result in error
+
+direction = "North";
+// No Error
+```
+
+[![ts7.png](https://i.postimg.cc/wBg1npC7/ts7.png)](https://postimg.cc/v4286pHs)
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Type Aliases
+
+- It defines an alias for a type or combination of types.
+- This can be achieved by using type.
+- Eg. type Combine = number | string
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Type Aliases"
+// Now num can be used as type in place of number
+type num = number;
+
+let val: num = 5;
+
+// Now Combine can be used where
+// you want to have type number or string
+type Combine = number | string;
+
+let v1: Combine;
+v1 = 5;
+v1 = "Hey!";
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Return Types
+
+- It defines the return type of a function.
+- If it is not specified TypeScript itself identifies the type.
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function return Type"
+const add = (num1: number, num2: number): string => {
+  return num1 + num2;
+};
+
+// Error
+// Because the return type of function
+// is string but the value returning
+// is a number
+
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+//  No error
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Type Aliases
+
+- It defines an alias for a type or combination of types.
+- This can be achieved by using type.
+- Eg. type Combine = number | string
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Type Aliases"
+// Now num can be used as type in place of number
+type num = number;
+
+let val: num = 5;
+
+// Now Combine can be used where
+// you want to have type number or string
+type Combine = number | string;
+
+let v1: Combine;
+v1 = 5;
+v1 = "Hey!";
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Types
+
+- It defines the return type of a function.
+- If it is not specified TypeScript itself identifies the type.
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function return Type"
+const add = (num1: number, num2: number): string => {
+  return num1 + num2;
+};
+
+// Error
+// Because the return type of function
+// is string but the value returning
+// is a number
+
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+//  No error
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Type
+
+- It defines the function regarding the parameters and return value.
+- It is created with arrow function notation
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function Types"
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+let myAns: () => number;
+
+myAns = add;
+
+// Error
+//  myAns accepts a type of funtion
+// where there are no parameters
+// and return value is number
+// but add function do accept two parameters
+
+let rightAns: (num1: number, num2: number) => number;
+rightAns = add;
+
+// No error
+// The type of funtion rightAns accept
+// is same as the type of add function
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Never Type
+
+- It is a type which functions can return.
+- If in case a function throws an error or goes into an infinite loop in that case function is never gonna return anything that means the return type of that function is never
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Never Type"
+// The return type of this function
+// is never because it never returns
+// anything
+const generateError = (): never => {
+  throw { message: "Something went wrong" };
+};
+
+// This will print nothing
+// Since the function never returns anything
+console.log(generateError());
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
