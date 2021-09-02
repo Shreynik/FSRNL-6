@@ -1,0 +1,639 @@
+import { CodeSurfer, CodeSurferColumns, Step } from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import { Appear } from "mdx-deck";
+export const theme = vsDark;
+
+# Getting started with React ✔
+
+---
+
+# Agenda
+
+- Setting up the IDE:
+  - VS Code
+  - Sublime Text
+- Install nvm
+  - Yarn
+    - yarn.lock, package-lock
+  - install node
+- Chrome Debugging
+- Why React and What is React ?
+
+---
+
+# Agenda
+
+- Basics of React
+  - One-way data binding
+  - State vs Props
+  - Virtual DOM
+  - Lifecycle Methods: ComponentDidMount, ComponentWillReceiveProps etc…
+  - Understanding JSX, string template
+- Basic Setup(React with TS), Webpack
+- Base repository
+- Code Maintainability/SDLC, Best Practices
+  - Eslint
+  - Stylelint
+  - Prettier
+
+---
+
+# Setting up the IDE
+
+- VSCode
+  - https://code.visualstudio.com/download
+- Sublime Text
+  - https://www.sublimetext.com/
+
+---
+
+# NVM
+
+- NVM is a node.js version manager
+- It is a tool used to manage multiple active Node.js versions.
+- NVM helps easily switch between multiple versions of Node.js, right from the command line.
+- DOCS - https://github.com/nvm-sh/nvm
+
+---
+
+# Installing NVM
+
+- Run any of the following commands:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+  - wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+---
+
+# yarn
+
+- It stands for Yet Another Resource Negotiator
+- It is a package manager that help to manage a project’s dependencies.
+- It was developed by Facebook to fix performance and security concerns with npm.
+- Installation
+  - via npm - npm install -g yarn
+  - via installer - https://classic.yarnpkg.com/en/docs/install/#windows-stable
+    - To check the current version - yarn --version
+
+---
+
+# yarn.lock
+
+---
+
+# Union Type
+
+- TypeScript allows to use more than one type for a variable or parameter. This is called union.
+- For Example you want a variable can have value of type string or number in that case union helps.
+- "|" operator is used to define multiple types. Eg. number | string | boolean
+
+---
+
+#
+
+Union Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+const add = (num1: number | string, num2: number | string) => {
+
+    let ans;
+
+    if(typeof num1 === 'number' && typeof num2 == 'number'){
+        ans = num1 + num2;
+    } else{
+        ans = num1.toString() + num2.toString();
+    }
+
+    return ans;
+  };
+  ​
+  console.log(add("2", "5")); // 25
+  console.log(add(2,5)); // 7
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Intersection Type
+
+- Intersection type creates a new type by combining multiple existing types.
+- The new type has all features of the existing types.
+- "&" operator is used to combine multiple types. Eg. A & B
+
+---
+
+#
+
+Intersection Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+interface A {
+  name: string;
+  age: number;
+}
+
+interface B {
+  email: string;
+}
+
+type C = A & B;
+
+const val: C = {
+  name: "XYZ",
+  age: 20,
+};
+// Error
+// Since val is declared as type C
+// Type C is a combination of A B
+// In val email is not present which is a part of B
+```
+
+[![ts6.png](https://i.postimg.cc/MZDQwv6q/ts6.png)](https://postimg.cc/F1YRgFkB)
+
+```js title=""
+interface A {
+  name: string;
+  age: number;
+}
+
+interface B {
+  email: string;
+}
+
+type C = A & B;
+
+const val: C = {
+  name: "XYZ",
+  age: 20,
+  email: "xyz@email.com",
+};
+
+console.log(val);
+//{ name: 'XYZ', age: 20, email: 'xyz@email.com' }
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Literal Type
+
+- A literal is a more concrete sub-type of a collective type.
+- The literal types allow you to define a type that accepts only one specified literal.
+
+---
+
+#
+
+Literal Type
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title=""
+let direction: "North";
+
+direction = "South";
+// Error
+// direction accepts only one literal
+// i.e. North
+// Assigning except North will result in error
+
+direction = "North";
+// No Error
+```
+
+[![ts7.png](https://i.postimg.cc/wBg1npC7/ts7.png)](https://postimg.cc/v4286pHs)
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Type Aliases
+
+- It defines an alias for a type or combination of types.
+- This can be achieved by using type.
+- Eg. type Combine = number | string
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Type Aliases"
+// Now num can be used as type in place of number
+type num = number;
+
+let val: num = 5;
+
+// Now Combine can be used where
+// you want to have type number or string
+type Combine = number | string;
+
+let v1: Combine;
+v1 = 5;
+v1 = "Hey!";
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Return Types
+
+- It defines the return type of a function.
+- If it is not specified TypeScript itself identifies the type.
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function return Type"
+const add = (num1: number, num2: number): string => {
+  return num1 + num2;
+};
+
+// Error
+// Because the return type of function
+// is string but the value returning
+// is a number
+
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+//  No error
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Type Aliases
+
+- It defines an alias for a type or combination of types.
+- This can be achieved by using type.
+- Eg. type Combine = number | string
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Type Aliases"
+// Now num can be used as type in place of number
+type num = number;
+
+let val: num = 5;
+
+// Now Combine can be used where
+// you want to have type number or string
+type Combine = number | string;
+
+let v1: Combine;
+v1 = 5;
+v1 = "Hey!";
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Types
+
+- It defines the return type of a function.
+- If it is not specified TypeScript itself identifies the type.
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function return Type"
+const add = (num1: number, num2: number): string => {
+  return num1 + num2;
+};
+
+// Error
+// Because the return type of function
+// is string but the value returning
+// is a number
+
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+//  No error
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Function Type
+
+- It defines the function regarding the parameters and return value.
+- It is created with arrow function notation
+- If function doesn't return anything then the type is void.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function Types"
+const add = (num1: number, num2: number): number => {
+  return num1 + num2;
+};
+
+let myAns: () => number;
+
+myAns = add;
+
+// Error
+//  myAns accepts a type of funtion
+// where there are no parameters
+// and return value is number
+// but add function do accept two parameters
+
+let rightAns: (num1: number, num2: number) => number;
+rightAns = add;
+
+// No error
+// The type of funtion rightAns accept
+// is same as the type of add function
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Never Type
+
+- It is a type which functions can return.
+- If in case a function throws an error or goes into an infinite loop in that case function is never gonna return anything that means the return type of that function is never
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Never Type"
+// The return type of this function
+// is never because it never returns
+// anything
+const generateError = (): never => {
+  throw { message: "Something went wrong" };
+};
+
+// This will print nothing
+// Since the function never returns anything
+console.log(generateError());
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Classes and Interface
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Class"
+class Details {
+  name: string;
+  age: number;
+
+  constructor(n: string, a: number) {
+    this.name = n;
+    this.age = a;
+  }
+
+  print() {
+    console.log(`Name - ${this.name}, age - ${this.age}`);
+  }
+}
+
+const detail = new Details("ABC", 20);
+
+detail.print();
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Data Modifiers
+
+- public - By default, all members of a class in TypeScript are public. All the public members can be accessed anywhere without any restrictions.
+- private - The private access modifier ensures that class members are visible only to that class and are not accessible outside the containing class.
+- readonly - It is used to make a property as read-only. Read-only members can be accessed outside the class, but their value cannot be changed.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Data Modifiers"
+class Details {
+  readonly name: string;
+  private age: number;
+
+  constructor(n: string,a: number){
+    this.name = n;
+    this.age = a;
+  }
+
+  print(){
+    console.log(`Name - ${this.name}, age - ${this.age}`)
+  }
+}
+
+const detail = new Details("ABC",20);
+
+detail.name = "XYZ";
+// Error -> name is set as readonly
+// cannot change its property
+
+console.log(detail.age);
+// Error -> age is set as private
+// cannot access it outside class
+
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Interface
+
+- An interface defines the syntax that any entity must adhere to.
+- Interfaces define properties, methods, and events, which are the members of the interface.
+- Interfaces contain only the declaration of the members.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Interface"
+interface Details {
+  name: string;
+  age: number;
+  print(n: string, a: number): void;
+}
+
+const myDetails: Details = {
+  name: "ABC",
+  age: 20,
+  print(name: string, age: number): void {
+    console.log(`${name} - ${age}`);
+  },
+};
+
+console.log(myDetails);
+// { name: 'ABC', age: 20, print: [Function: print] }
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Understanding inheritance
+
+---
+
+# Abstract Class
+
+- Abstract classes are mainly for inheritance where other classes may derive from them.
+- An abstract class in Typescript is defined using the abstract keyword
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Abstract Class"
+abstract class Details {
+  name: string;
+
+  constructor(name: string) {
+      this.name = name;
+  }
+
+  print(): void{
+      console.log(this.name);
+  }
+}
+
+class Student  extends Details {
+  age : number;
+
+  constructor(name: string, age: number) {
+      super(name); // must call super()
+      this.age = age;
+  }
+}
+
+const record = new Student("ABC",21);
+record.print();
+// ABC
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+# Inheritance in Interfaces
+
+- Typescript allows an interface to be inherited from zero or more base types.
+- The base type can be a class or interface.
+- "extends" keyword is used to implement inheritance among interfaces.
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Inheritance in Interfaces"
+interface Detail {
+  name:string
+  age:number
+}
+
+interface Records extends Detail {
+  rollno: number
+}
+
+let myDetails: Records;
+// myDetail should contain
+// all properties defined in
+//  Detail and Record interfaces
+
+myDetails = {
+  name: "ABC",
+  age: 20,
+  rollno: 5
+}
+
+console.log(myDetails);
+//{ name: 'ABC', age: 20, rollno: 5 }
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
