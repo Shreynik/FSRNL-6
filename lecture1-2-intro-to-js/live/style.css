@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.container {
+  width: 90%;
+  margin: 1rem auto;
+  background: #f7f7f7;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 10%);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #2962ff;
+  color: #f4f4f4;
+}
+
+header .title {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.search-block input {
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+}
+
+.search-block input[type="button"] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 4px 6px rgb(0 0 0 / 0);
+  transition: all 0.2s ease-in-out;
+}
+
+.search-block input[type="button"]:hover {
+  box-shadow: 4px 6px rgb(0 0 0 / 40%);
+  transform: translateY(-1px);
+}
+
+.search-block input[type="button"]:active {
+  box-shadow: 2px 4px 6px rgb(0 0 0 / 0);
+  transform: translateY(0);
+}
+
+main {
+  padding: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e3f2fd;
+}
+
+.table thead {
+  text-align: left;
+  background: #e3f2fd;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem;
+}
+
+.table tbody tr {
+  transition: background 0.2s ease-in-out;
+}
+
+.table tbody tr:hover {
+  background: #eceff1;
+}
+
+.inp-book-name,
+.inp-add-btn {
+  outline: none;
+  border: none;
+  border-radius: 4px;
+
+}
+
+.inp-book-name {
+  border: 1px solid #2962ff;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+}
+
+.inp-add-btn {
+  padding: 0.4rem 1rem;
+  background: #2962ff;
+  color: #fff;
+  cursor: pointer;
+}
