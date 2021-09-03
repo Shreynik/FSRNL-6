@@ -1,37 +1,89 @@
+// class Details { 
+//   readonly name: string;
+//   private age: number;
 
-const add =  (num1 : number, num2 : number): number => {
-    return num1 + num2;
-  };
+//   constructor(n: string,a: number){
+//     this.name = n;
+//     this.age = a;
+//   }
+
+//   print(){
+//     console.log(`Name - ${this.name}, age - ${this.age}`)
+//   }
+// } 
+
+// const detail = new Details("ABC",20);
+
+// detail.name = "XYZ";
+// // Error -> name is set as readonly
+// // cannot change its property
+
+// console.log(detail.age);
+// Error -> age is set as private
+// cannot access it outside class
 
 
-// let myAns : () => number;
-
-// myAns = add;
-
-// Error
-//  myAns accepts a type of funtion
-// where there are no parameters
-// and return value is number
-// but add function do accept two parameters
-
-let rightAns: (num1: number,num2: number) => number;
-rightAns = add;
-
-// No error
-// The type of funtion rightAns accept
-// is same as the type of add function 
+// interface Details {
+//   name: string;
+//   age: number;
+//   print(n: string,a: number) : void;
+// }
 
 
+// const myDetails : Details = {
+//   name: "ABC",
+//   age: 20,
+//   print(name:string,age:number) : void {
+//     console.log(`${name} - ${age}`);
+//   }
+// }
 
-// The return type of this function
-// is never because it never returns
-// anything
-const generateError = () : never => {
-    throw { message: "Something went wrong" };
+// console.log(myDetails);
+
+// abstract class Details {
+//   name: string;
+  
+//   constructor(name: string) {
+//       this.name = name;
+//   }
+
+//   print(): void{
+//       console.log(this.name);
+//   }
+// }
+
+// class Student  extends Details { 
+//   age : number;
+  
+//   constructor(name: string, age: number) { 
+//       super(name); // must call super()
+//       this.age = age;
+//   }
+// }
+
+// const record = new Student("ABC",21);
+// record.print();
+// ABC
+
+
+interface Detail {   
+  name:string  
+  age:number  
+}  
+
+interface Records extends Detail {   
+  rollno: number
+}  
+
+let myDetails: Records;
+// myDetail should contain
+// all properties defined in
+//  Detail and Record interfaces
+
+myDetails = {
+  name: "ABC",
+  age: 20,
+  rollno: 5
 }
 
-// This will print nothing
-// Since the function never returns anything
-console.log(generateError());
-
-
+console.log(myDetails);
