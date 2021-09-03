@@ -78,562 +78,210 @@ export const theme = vsDark;
 
 # yarn.lock
 
+- Yarn needs to store exactly which versions of each dependency were installed.To do this Yarn uses a yarn.lock file in the root of your project.
+- yarn.lock file is auto-generated and should be handled entirely by Yarn.
+- As you add/upgrade/remove dependencies with the Yarn CLI, it will automatically update your yarn.lock file.
+
 ---
 
-# Union Type
+# package-lock
 
-- TypeScript allows to use more than one type for a variable or parameter. This is called union.
-- For Example you want a variable can have value of type string or number in that case union helps.
-- "|" operator is used to define multiple types. Eg. number | string | boolean
+- package-lock.json is automatically generated for any operations where npm modifies either the node_modules tree, or package.json
+- It keeps track of versions of each package installed with their dependencies version also.
+
+---
+
+# Installing Node.js
+
+- nvm install <SPECIFIC_NODE_VERSION> - To install specific version of node
+- nvm install node - To install latest version of node
+- nvm use <SPECIFIC_NODE_VERSION> - To use specific version
+- From Node.js Site - https://nodejs.org/en/download/
+
+---
+
+# Chrome Debugging
+
+- React Developer Tools - https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
+- https://medium.com/@baphemot/intro-to-debugging-reactjs-applications-67cf7a50b3dd
+
+---
+
+# What is React.js?
+
+- ReactJS is a declarative, efficient, and flexible JavaScript library for building reusable UI components.
+- React was created by Jordan Walke,who was a software engineer working for Facebook.It is maintained by Facebook.
+- React allows developers to create large web applications that can change data, without reloading the page.
+
+---
+
+# Why React?
+
+- ReactJS allows you to divide your entire application into various components.
+- One-way Data Binding
+- Virtual DOM
+- Simplicity
+- Performance
+
+---
+
+# Installing React.js
+
+- npx create-react-app name
+
+- cd name
+
+- npm start
+
+- Docs - https://reactjs.org/docs/getting-started.html
+
+---
+
+# Basics of React
+
+- One-way data binding
+- State vs Props
+- Virtual DOM
+- Lifecycle Methods
+- Understanding JSX, string template
+
+---
+
+# One-Way Data Binding
+
+- ReactJS is designed in such a manner that follows unidirectional data flow or one-way data binding.
+- One-way data binding will bind the data from the component to the view (DOM) or from view to the component.
+- You can only bind the data from component to the view or from view to the component.
+
+---
+
+# State vs Props
+
+- State
+
+  - The state is an updatable structure that is used to contain data or information about the component and can change over time.
+  - The change in state can happen as a response to user action or system event.
+  - States can be used for rendering dynamic changes with the component.
+
+- Props
+
+  - Props are read-only components.
+  - Props allow you to pass data from one component to other components as an argument.
+  - Props are used to communicate between components.
+
+---
+
+# Virtual DOM
+
+- DOM manipulation is a lot slower than most JavaScript operations.
+- In React, for every DOM object, there is a corresponding “virtual DOM object.”
+- Manipulating the DOM is slow. Manipulating the virtual DOM is much faster.
+
+---
+
+# How Virtual DOM works
+
+- When you render a JSX element, every single virtual DOM object gets updated.
+- Once the virtual DOM has updated, then React compares the virtual DOM with a virtual DOM snapshot that was taken right before the update. By comparing the new virtual DOM with a pre-update version, React figures out exactly which virtual DOM objects have changed.
+- Once React knows which virtual DOM objects have changed, then React updates those objects, and only those objects, on the real DOM
+
+---
+
+# Lifyecycle methods
+
+- In ReactJS, every component creation process involves various lifecycle methods.
+- These lifecycle methods are called at various points during a component's life.
 
 ---
 
 #
 
-Union Type
+- componentWillMount()
 
-<CodeSurferColumns>
+  - This is invoked immediately before a component gets rendered into the DOM.
 
-<Steps>
+- componentDidMount()
 
-```js title=""
-const add = (num1: number | string, num2: number | string) => {
+  - This is invoked immediately after a component gets rendered and placed on the DOM.
+  - After this, you can do any DOM querying operations.
 
-    let ans;
+- render()
 
-    if(typeof num1 === 'number' && typeof num2 == 'number'){
-        ans = num1 + num2;
-    } else{
-        ans = num1.toString() + num2.toString();
-    }
-
-    return ans;
-  };
-  ​
-  console.log(add("2", "5")); // 25
-  console.log(add(2,5)); // 7
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Intersection Type
-
-- Intersection type creates a new type by combining multiple existing types.
-- The new type has all features of the existing types.
-- "&" operator is used to combine multiple types. Eg. A & B
+  - This method is defined in each and every component
+  - It is responsible for returning a single root HTML node element.
+  - If you don't want to render anything, you can return a null or false value.
 
 ---
 
 #
 
-Intersection Type
+- componentWillRecieveProps()
 
-<CodeSurferColumns>
+  - It is invoked when a component receives new props.
 
-<Steps>
+- shouldComponentUpdate()
 
-```js title=""
-interface A {
-  name: string;
-  age: number;
-}
-
-interface B {
-  email: string;
-}
-
-type C = A & B;
-
-const val: C = {
-  name: "XYZ",
-  age: 20,
-};
-// Error
-// Since val is declared as type C
-// Type C is a combination of A B
-// In val email is not present which is a part of B
-```
-
-[![ts6.png](https://i.postimg.cc/MZDQwv6q/ts6.png)](https://postimg.cc/F1YRgFkB)
-
-```js title=""
-interface A {
-  name: string;
-  age: number;
-}
-
-interface B {
-  email: string;
-}
-
-type C = A & B;
-
-const val: C = {
-  name: "XYZ",
-  age: 20,
-  email: "xyz@email.com",
-};
-
-console.log(val);
-//{ name: 'XYZ', age: 20, email: 'xyz@email.com' }
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Literal Type
-
-- A literal is a more concrete sub-type of a collective type.
-- The literal types allow you to define a type that accepts only one specified literal.
+  - It is invoked when a component decides any changes/updation to the DOM.
+  - It allows you to control the component's behavior of updating itself.
+  - If this method returns true, the component will update. Otherwise, the component will skip the updating.
 
 ---
 
 #
 
-Literal Type
+- componentWillUpdate()
 
-<CodeSurferColumns>
+  - It is invoked just before the component updating occurs.
 
-<Steps>
-
-```js title=""
-let direction: "North";
-
-direction = "South";
-// Error
-// direction accepts only one literal
-// i.e. North
-// Assigning except North will result in error
-
-direction = "North";
-// No Error
-```
-
-[![ts7.png](https://i.postimg.cc/wBg1npC7/ts7.png)](https://postimg.cc/v4286pHs)
-
-</Steps>
-
-</CodeSurferColumns>
+- componentDidUpdate()
+  - It is invoked immediately after the component updating occurs.
+  - you can put any code inside this which you want to execute once the updating occurs.
+  - This method is not invoked for the initial render.
 
 ---
 
-# Type Aliases
+#
 
-- It defines an alias for a type or combination of types.
-- This can be achieved by using type.
-- Eg. type Combine = number | string
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Type Aliases"
-// Now num can be used as type in place of number
-type num = number;
-
-let val: num = 5;
-
-// Now Combine can be used where
-// you want to have type number or string
-type Combine = number | string;
-
-let v1: Combine;
-v1 = 5;
-v1 = "Hey!";
-```
-
-</Steps>
-
-</CodeSurferColumns>
+- componentWillUnmount()
+  - This method is invoked immediately before a component is destroyed and unmounted permanently.
+  - It performs any necessary cleanup related task such as invalidating timers, event listener, canceling network requests, or cleaning up DOM elements.
 
 ---
 
-# Function Return Types
+# JSX
 
-- It defines the return type of a function.
-- If it is not specified TypeScript itself identifies the type.
-- If function doesn't return anything then the type is void.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Function return Type"
-const add = (num1: number, num2: number): string => {
-  return num1 + num2;
-};
-
-// Error
-// Because the return type of function
-// is string but the value returning
-// is a number
-
-const add = (num1: number, num2: number): number => {
-  return num1 + num2;
-};
-
-//  No error
-```
-
-</Steps>
-
-</CodeSurferColumns>
+- JSX stands for JavaScript Extension.
+- It is a React extension which allows writing JavaScript code that looks like HTML.
+- JSX provides you to write HTML like structures in the same file where you write JavaScript code
+- The preprocessor will transform these expressions into actual JavaScript code.
 
 ---
 
-# Type Aliases
-
-- It defines an alias for a type or combination of types.
-- This can be achieved by using type.
-- Eg. type Combine = number | string
+# Code Maintainability/SDLC, Best Practices
 
 ---
 
-<CodeSurferColumns>
+# Eslint
 
-<Steps>
-
-```js title="Type Aliases"
-// Now num can be used as type in place of number
-type num = number;
-
-let val: num = 5;
-
-// Now Combine can be used where
-// you want to have type number or string
-type Combine = number | string;
-
-let v1: Combine;
-v1 = 5;
-v1 = "Hey!";
-```
-
-</Steps>
-
-</CodeSurferColumns>
+- ESLint is a tool that allows us to maintain code quality and enforce code conventions.
+- ESLint will not actually execute the code but will instead read through the source code to see if all the preconfigured code conventions are followed by the developers.
+- Installation - yarn add eslint
+- Docs - https://yarnpkg.com/package/eslint
 
 ---
 
-# Function Types
+# Stylelint
 
-- It defines the return type of a function.
-- If it is not specified TypeScript itself identifies the type.
-- If function doesn't return anything then the type is void.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Function return Type"
-const add = (num1: number, num2: number): string => {
-  return num1 + num2;
-};
-
-// Error
-// Because the return type of function
-// is string but the value returning
-// is a number
-
-const add = (num1: number, num2: number): number => {
-  return num1 + num2;
-};
-
-//  No error
-```
-
-</Steps>
-
-</CodeSurferColumns>
+- A modern linter that helps you avoid errors and enforce conventions in your styles.
+- Installation - yarn add stylelint
+- Configuration - https://github.com/stylelint/stylelint/blob/16b4595496f54fa52182fafe9d75e78691b38261/docs/user-guide/get-started.md
 
 ---
 
-# Function Type
-
-- It defines the function regarding the parameters and return value.
-- It is created with arrow function notation
-- If function doesn't return anything then the type is void.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Function Types"
-const add = (num1: number, num2: number): number => {
-  return num1 + num2;
-};
-
-let myAns: () => number;
-
-myAns = add;
-
-// Error
-//  myAns accepts a type of funtion
-// where there are no parameters
-// and return value is number
-// but add function do accept two parameters
-
-let rightAns: (num1: number, num2: number) => number;
-rightAns = add;
-
-// No error
-// The type of funtion rightAns accept
-// is same as the type of add function
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Never Type
-
-- It is a type which functions can return.
-- If in case a function throws an error or goes into an infinite loop in that case function is never gonna return anything that means the return type of that function is never
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Never Type"
-// The return type of this function
-// is never because it never returns
-// anything
-const generateError = (): never => {
-  throw { message: "Something went wrong" };
-};
-
-// This will print nothing
-// Since the function never returns anything
-console.log(generateError());
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Classes and Interface
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Class"
-class Details {
-  name: string;
-  age: number;
-
-  constructor(n: string, a: number) {
-    this.name = n;
-    this.age = a;
-  }
-
-  print() {
-    console.log(`Name - ${this.name}, age - ${this.age}`);
-  }
-}
-
-const detail = new Details("ABC", 20);
-
-detail.print();
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Data Modifiers
-
-- public - By default, all members of a class in TypeScript are public. All the public members can be accessed anywhere without any restrictions.
-- private - The private access modifier ensures that class members are visible only to that class and are not accessible outside the containing class.
-- readonly - It is used to make a property as read-only. Read-only members can be accessed outside the class, but their value cannot be changed.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Data Modifiers"
-class Details {
-  readonly name: string;
-  private age: number;
-
-  constructor(n: string,a: number){
-    this.name = n;
-    this.age = a;
-  }
-
-  print(){
-    console.log(`Name - ${this.name}, age - ${this.age}`)
-  }
-}
-
-const detail = new Details("ABC",20);
-
-detail.name = "XYZ";
-// Error -> name is set as readonly
-// cannot change its property
-
-console.log(detail.age);
-// Error -> age is set as private
-// cannot access it outside class
-
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Interface
-
-- An interface defines the syntax that any entity must adhere to.
-- Interfaces define properties, methods, and events, which are the members of the interface.
-- Interfaces contain only the declaration of the members.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Interface"
-interface Details {
-  name: string;
-  age: number;
-  print(n: string, a: number): void;
-}
-
-const myDetails: Details = {
-  name: "ABC",
-  age: 20,
-  print(name: string, age: number): void {
-    console.log(`${name} - ${age}`);
-  },
-};
-
-console.log(myDetails);
-// { name: 'ABC', age: 20, print: [Function: print] }
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Understanding inheritance
-
----
-
-# Abstract Class
-
-- Abstract classes are mainly for inheritance where other classes may derive from them.
-- An abstract class in Typescript is defined using the abstract keyword
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Abstract Class"
-abstract class Details {
-  name: string;
-
-  constructor(name: string) {
-      this.name = name;
-  }
-
-  print(): void{
-      console.log(this.name);
-  }
-}
-
-class Student  extends Details {
-  age : number;
-
-  constructor(name: string, age: number) {
-      super(name); // must call super()
-      this.age = age;
-  }
-}
-
-const record = new Student("ABC",21);
-record.print();
-// ABC
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Inheritance in Interfaces
-
-- Typescript allows an interface to be inherited from zero or more base types.
-- The base type can be a class or interface.
-- "extends" keyword is used to implement inheritance among interfaces.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Inheritance in Interfaces"
-interface Detail {
-  name:string
-  age:number
-}
-
-interface Records extends Detail {
-  rollno: number
-}
-
-let myDetails: Records;
-// myDetail should contain
-// all properties defined in
-//  Detail and Record interfaces
-
-myDetails = {
-  name: "ABC",
-  age: 20,
-  rollno: 5
-}
-
-console.log(myDetails);
-//{ name: 'ABC', age: 20, rollno: 5 }
-```
-
-</Steps>
-
-</CodeSurferColumns>
+# Prettier
+
+- Prettier is an opinionated code formatter.
+- It enforces a consistent style by parsing your code and re-printing it with its own rules.
+- Installation - yarn add prettier
 
 ---
