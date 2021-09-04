@@ -461,6 +461,33 @@ function doSomething(fn: DescribableFunction) {
 
 ---
 
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Construct Signatures"
+type SomeConstructor = {
+  new (s: string): SomeObject;
+};
+function fn(ctor: SomeConstructor) {
+  return new ctor("hello");
+}
+```
+
+```js title="Construct Signatures"
+interface CallOrConstruct {
+  new (s: string): Date;
+  (n?: number): number;
+}
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+
+---
+
 # Never Type
 
 - It is a type which functions can return.
@@ -794,7 +821,7 @@ console.log(myDetails);
 
 <Step>
 
-```ts title="Generic Classes"
+```ts title="Generic Functions"
   function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
     return obj[key];
   }
