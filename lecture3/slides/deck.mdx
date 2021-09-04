@@ -597,6 +597,103 @@ console.log(detail.age);
 
 ---
 
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Initialise members"
+class BadGreeter {
+  name: string;
+}
+
+```
+
+```js title="Constructors"
+class GoodGreeter {
+  name: string;
+ 
+  constructor() {
+    this.name = "hello";
+  }
+}
+
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Super calls"
+class Base {
+  k = 4;
+}
+ 
+class Derived extends Base {
+  constructor() {
+    console.log(this.k);
+    super();
+  }
+}
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Protected members"
+class Greeter {
+  public greet() {
+    console.log("Hello, " + this.getName());
+  }
+  protected getName() {
+    return "hi";
+  }
+}
+ 
+class SpecialGreeter extends Greeter {
+  public howdy() {
+    console.log("Howdy, " + this.getName());
+  }
+}
+const g = new SpecialGreeter();
+g.greet();
+g.getName();
+```
+
+```js title="Private members"
+class Base {
+  private x = 0;
+}
+const b = new Base();
+// Can't access from outside the class
+console.log(b.x);
+
+class Derived extends Base {
+  showX() {
+    console.log(this.x);
+  }
+}
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+
+---
+
 # Interface
 
 - An interface defines the syntax that any entity must adhere to.
