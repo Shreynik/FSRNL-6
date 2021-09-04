@@ -153,6 +153,16 @@ let num1: string = num; // Error
 
 [![ts5.png](https://i.postimg.cc/7YkXb84N/ts5.png)](https://postimg.cc/F1T0n67f)
 
+```js title=""
+let value: unknown;
+
+value.foo.bar; // Error
+value.trim(); // Error
+value(); // Error
+new value(); // Error
+value[0][1]; // Error
+```
+
 </Step>
 
 </CodeSurferColumns>
@@ -371,74 +381,6 @@ const add = (num1: number, num2: number): number => {
 
 ---
 
-# Type Aliases
-
-- It defines an alias for a type or combination of types.
-- This can be achieved by using type.
-- Eg. type Combine = number | string
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Type Aliases"
-// Now num can be used as type in place of number
-type num = number;
-
-let val: num = 5;
-
-// Now Combine can be used where
-// you want to have type number or string
-type Combine = number | string;
-
-let v1: Combine;
-v1 = 5;
-v1 = "Hey!";
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
-# Function Types
-
-- It defines the return type of a function.
-- If it is not specified TypeScript itself identifies the type.
-- If function doesn't return anything then the type is void.
-
----
-
-<CodeSurferColumns>
-
-<Steps>
-
-```js title="Function return Type"
-const add = (num1: number, num2: number): string => {
-  return num1 + num2;
-};
-
-// Error
-// Because the return type of function
-// is string but the value returning
-// is a number
-
-const add = (num1: number, num2: number): number => {
-  return num1 + num2;
-};
-
-//  No error
-```
-
-</Steps>
-
-</CodeSurferColumns>
-
----
-
 # Function Type
 
 - It defines the function regarding the parameters and return value.
@@ -472,6 +414,45 @@ rightAns = add;
 // No error
 // The type of funtion rightAns accept
 // is same as the type of add function
+```
+
+</Steps>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns>
+
+<Steps>
+
+```js title="Function Types"
+function greeter(fn: (a: string) => void) {
+  fn("Hello, World");
+}
+ 
+function printToConsole(s: string) {
+  console.log(s);
+}
+ 
+greeter(printToConsole);
+```
+
+```js title="Function Types"
+type GreetFunction = (a: string) => void;
+function greeter(fn: GreetFunction) {
+  // ...
+}
+```
+
+```js title="Function Types"
+type DescribableFunction = {
+  description: string;
+  (someArg: number): boolean;
+};
+function doSomething(fn: DescribableFunction) {
+  console.log(fn.description + " returned " + fn(6));
+}
 ```
 
 </Steps>
